@@ -1,0 +1,92 @@
+<!doctype html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Video Filters for Privacy</title>
+
+  <style type="text/css">
+    li span{
+      width:100px;
+      display:inline-block;
+    }
+  </style>
+  
+</head>
+<body style="font: 12px arial">
+
+	<font size=3>Identify the subject</font> <input type=button onclick=javascript:showHide(0) value="Show Instructions" id=showButton><br>
+	<div id=instructions style="display:none"><br>
+  	<li>At the top, you are shown the target Subject in original video.
+  	<li>Underneath, you will see 7-12 videos that have been filtered to remove details.
+  	<li>The filtered videos show a different action from the Subject video at the top but one of these videos is of the Subject.
+  	<li>Your goal is to pick the video below that is also of the Subject.
+  	<li>The background pattern from the videos will not help. The Subject video always has a unique background that doesn't appear below.
+  	<li>Repeat for all 7-10 questions.
+  	<li>The task may be hard but please try your best and guess when you aren't sure.
+  	<li>The full HIT should take 3-5 minutes, but more if your connection is slow.
+  	<li>Certain filters are eligible for a bonus.
+  	<li>If you get 100% on the questions in an eligible filter, we will pay you a bonus.
+  	<li>It may take several days for the bonus to appear.
+	</div>
+
+
+	<script language=Javascript>var subjectFile = 'dy3RibXAoRCt9Ubf5g1UpYZSqdsyw4fg';
+    var subject = 1;
+    var questions = new Array();
+    var filters = ["canny", "pixel", "blur", "invert", "greendot", "original"];
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<form id="mturk_form" method="POST" action="http://www.mturk.com/mturk/externalSubmit">
+	<input type="hidden" name=assignmentId id=assignmentId>
+	<input type="hidden" id="questions" name="questions">
+	<input type="hidden" id="answer" name="answer">
+	<input type="hidden" id="right" name="right">
+	<input type="hidden" id="score" name="score">
+	<input type="hidden" id="filter" name="filter">
+	<input type="hidden" id="ip" name="ip" value="70.192.72.103">
+	<input type="hidden" id="agent" name="agent" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.29.13 (KHTML, like Gecko) Version/6.0.4 Safari/536.29.13">
+	<br>
+  <div id=top style="clear: both; height: 200px; padding-left: 50%; margin-left: -100px; position: relative;">
+    <div id=subject style="width: 200px"></div>
+    <div id=buttons style="width: 160px; position: relative; top: -100px; left: 200px; ">
+      <span id=stat>Question 0/0<br>Choose from 0</span>
+      <input type=button value="Click here to submit HIT" id=submitButton onClick="" disabled>
+    </div>
+  </div>
+  <div id=choices style="text-align: center"></div>
+</form>
+
+<script language="Javascript">
+    // document.getElementById('assignmentId').value = gup('assignmentId');
+
+    // // Check if the worker is PREVIEWING the HIT or if they've ACCEPTED the HIT
+    // if (gup('assignmentId') == "ASSIGNMENT_ID_NOT_AVAILABLE") {
+   	// 		document.getElementById("submitButton").disabled = true;
+    // } else {
+    //     var form = document.getElementById('mturk_form');
+    //     if (document.referrer && ( document.referrer.indexOf('workersandbox') != -1) ) {
+    //         form.action = "http://workersandbox.mturk.com/mturk/externalSubmit";
+    //    }
+    // }
+</script>
+
+</body>
+
+
+  <script type="text/javascript" src="data.js"></script>
+  <script type="text/javascript" src="js/underscore.min.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/init.js"></script>
+
+
+</html>
