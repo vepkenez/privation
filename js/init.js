@@ -126,8 +126,9 @@ $(window).load(function () {
  		}
  	];
 
-
-
+ 	$('body').append('randomly selecting a user/chain/movie');
+ 	$('body').append('<div>'+'user:'+hero.user_id+'</div>')
+ 	$('body').append('<div>'+'chain:'+hero.chain_id+'</div>')
   	$(permutations).each(function(){
   		var cont = $('<ul><li>'+'<span>chain:'+hero.chain_id+'</span>'+
   				'<span>user:'+ hero.user_id+'</span>'+'</li><li>'+this.name+'</li></ul>');
