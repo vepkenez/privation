@@ -50,8 +50,8 @@ $(window).load(function () {
  	//take a random entry from the list
   	var hero = pam_list[_.random(0, pam_list.length)];
 
- 	// now get a list of the other pams that match certain conditions
-
+  	// Here are some examples of how we can write queries....
+  	// this could be useful for lots of things.
  	var permutations = [
 
  		{
@@ -76,30 +76,6 @@ $(window).load(function () {
  						{'user_id':'same'}
   					]
  		},
- 		// {
- 		// 	'name': 'different action, different person',
- 		// 	'query':[
- 		// 				{'chain_id':'diff'},
- 		// 				{'user_id':'diff'}
-  	// 				]
- 		// },
- 		// {
- 		// 	'name': 'different person, different action',
- 		// 	'query':[
- 						
- 		// 				{'user_id':'diff'},
- 		// 				{'chain_id':'diff'}
- 						
-  	// 				]
- 		// },
- 		// {
- 		// 	'name': 'different people, any action',
- 		// 	'query':[
- 						
- 		// 				{'user_id':'diff'},
- 						
-  	// 				]
- 		// },
  		{
  			'name': 'same person, any action',
  			'query':[
@@ -126,6 +102,11 @@ $(window).load(function () {
  		}
  	];
 
+ 	/*
+
+	This stuff down here just prints things to the page...
+ 	*/
+
  	$('body').append('randomly selecting a user/chain/movie');
  	$('body').append('<div>'+'user:'+hero.user_id+'</div>')
  	$('body').append('<div>'+'chain:'+hero.chain_id+'</div>')
@@ -142,7 +123,4 @@ $(window).load(function () {
   		})
   		$('body').append(cont)
   	})
-
-
-
 });
