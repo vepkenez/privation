@@ -43,17 +43,11 @@ function get_pams(pam,query_object){
 			var l = Object.keys(v)[0];
 			p = v[l];
 			v = l;
-
-
-
 		}
-
-
 
 		PL = _(PL).filter(function(thispam){
 			return q_funcs[v](k,pam,thispam,p);
 		})
-
 	}
 
 	return PL.sortBy(function(a){
@@ -167,11 +161,55 @@ function test_queries(){
   	})
 
 }
+	
+var num_Qs = 10,
+	results = [];
+
+function rnd_element(list){
+	return list[_.random(0,list.length-1)]
+}
+
+
+function get_question(){
+	//get a random person action movie
+	var hero = rnd_element(pam_list);
+	var filter = rnd_element(filters);
+
+	if(results.length){
+		while(_(results).pluck('user_id').contains(hero.user_id)){
+			hero = rnd_element(pam_list);
+		}		
+		while(_(results).last().filter == filter){
+			filter = rnd_element(filters);
+		}
+	}
+
+	return (
+		{	
+			'hero':hero,
+			'filter':filter,
+			'army':
+				_(
+					get_pams(hero,[{'user_id':'diff'}]))//get a bunch of different people performing any action
+					.chain()
+					.shuffle()//shuffle the list
+					.first(8)//take the 1st 8
+					.union(
+						// add in a movie featuring the same person performing a different action
+						[_(get_pams(hero,[{'user_id':'same'},{'chain_id':'diff'}])).shuffle()[0]]
+					)
+					.shuffle()//mix it all up
+					.value()//and return the list of 9 movies
+		})
+
+}
+
 
 
 $(window).load(function () {
- 	//take a random entry from the list
-  	
+
+	console.log(get_question())
 
  	test_queries();
+
 });
