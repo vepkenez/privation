@@ -78,14 +78,6 @@ $(window).load(function () {
   					]
  		},
  		{
- 			'name': 'same person, different action',
- 			'query':[
- 						{'user_id':'same'},
-  						{'chain_id':'diff'}
-  						
-  					]
- 		},
- 		{
  			'name': 'same action, different person, user_id is not "5"',
  			'query':[
  						
