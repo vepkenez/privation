@@ -251,7 +251,8 @@ function get_question(value){
 					.first(8)//take the 1st 8
 					.union(
 						// add in a movie of the subject doing the same action
-						[_(get_pams(hero,[{'user_id':'same'},{'chain_id':'same'}])).shuffle()[0]]
+						//[_(get_pams(hero,[{'user_id':'same'},{'chain_id':'same'}])).shuffle()[0]]
+						[hero]//or this...
 					)
 					.shuffle()//mix it all up
 					.value()// underscore.js stuff...returns the result as a list
