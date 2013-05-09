@@ -210,6 +210,6 @@ $(window).load(function () {
 
 	console.log(get_question())
 
- 	test_queries();
+ 	// test_queries();
 
 });
