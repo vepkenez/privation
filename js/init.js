@@ -243,7 +243,10 @@ function get_question(value){
 			'hero':hero,
 			'filter':filter,
 			'army':
-				_(get_pams(hero,[{'user_id':'diff'}]))//a bunch of different people not including the hero, performing any action
+				_(get_pams(hero,[
+						{'user_id':'diff'},
+						{'chain_id':'same'}
+					]))//a bunch of different people not including the hero, performing the same action
 					
 					.chain()//underscore.js stuff
 
