@@ -279,7 +279,7 @@ function populate_question(){
 	$('body').append('<div>Hero:'+Q.hero.id+'</div>')
 
     $(Q.army).each(function(){
-        $("#choices").append(getPlayerCode(this.filename, Q.filter, this.status));
+        $("#choices").append(getPlayerCode(this.filename, Q.filter, this.parent_id));
     })
 
     $("#subject").append(getPlayerCode(Q.hero.filename, "original", -1));
