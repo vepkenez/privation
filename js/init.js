@@ -214,24 +214,19 @@ function get_question(value){
 	var hero = null,
 		pams =[];
 
+	//if we have a specified hero id, get that, otherwise pick a random clip
 	if (value){
 		hero = get_pams(null,[{'id':{'is':value}}])[0]
 	}else{
 		hero = rnd_element(pam_list);
 	}
 
-	console.log(hero)
-	
-
-	pams = get_pams(hero,[{'user_id':'diff'},{'chain_id':'same'}]);
-
-
-
-
+	// pick a random filter
 	var filter = rnd_element(filters);
 
+	// make sure we don't get the same hero or filter as last time
 	if(results.length){
-		while(_(results).pluck('user_id').contains(hero.user_id)){
+		while(_(results).last().hero.user_id == hero.user_id){
 			hero = rnd_element(pam_list);
 		}		
 		while(_(results).last().filter == filter){
@@ -240,24 +235,26 @@ function get_question(value){
 	}
 
 
-
-
+	//now based on the hero, get a bunch of movies of people doing the same action
+	// as long as none of them are the same person as the hero
+	// return our question
 	return (
 		{	
 			'hero':hero,
 			'filter':filter,
 			'army':
-				_(
-					pams)//get a bunch of different people performing any action
-					.chain()
+				_(get_pams(hero,[{'user_id':'diff'},{'chain_id':'same'}]))//a bunch of different people not including the hero, performing any action
+					
+					.chain()//underscore.js stuff
+
 					.shuffle()//shuffle the list
 					.first(8)//take the 1st 8
 					.union(
-						// add in a movie featuring the same person performing a different action
-						[_(get_pams(hero,[{'user_id':'same'},{'chain_id':'diff'}])).shuffle()[0]]
+						// add in a movie of the subject doing the same action
+						[_(get_pams(hero,[{'user_id':'same'},{'chain_id':'same'}])).shuffle()[0]]
 					)
 					.shuffle()//mix it all up
-					.value()//and return the list of 9 movies
+					.value()// underscore.js stuff...returns the result as a list
 		})
 
 }
@@ -267,21 +264,24 @@ function populate_question(){
 
 	var value = null;
 
+	// read in the query args if any
 	if (getQueryStringParam('h')){
     	value = getQueryStringParam('h');    
     }
 
-
-
+    // get our question
+    //  this will have a 'hero' an 'army', and a 'filter'
 	var Q = get_question(value);
 
-
+	// add our hero label so we know the id of the hero for future reference (testing only)
 	$('body').append('<div>Hero:'+Q.hero.id+'</div>')
 
+	//add the army
     $(Q.army).each(function(){
         $("#choices").append(getPlayerCode(this.filename, Q.filter, this.parent_id));
     })
 
+    // add the subject
     $("#subject").append(getPlayerCode(Q.hero.filename, "original", -1));
 
 
@@ -289,7 +289,6 @@ function populate_question(){
 
 
 $(window).load(function () {
-
 
  	populate_question()
 
