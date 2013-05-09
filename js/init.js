@@ -15,7 +15,7 @@ var q_funcs = {
 		return (obj2[param] != val)
 	},
 	'evals' : function(param,obj1,obj2,func){
-		return func(param,obj2)
+		return func(param,obj1,obj2)
 	}
 
 }
@@ -66,14 +66,10 @@ function get_pams(pam,query_object){
 
 
 
+function test_queries(){
 
-
-
-$(window).load(function () {
- 	//take a random entry from the list
-  	var hero = pam_list[_.random(0, pam_list.length)];
-
-  	// Here are some examples of how we can write queries....
+	var hero = pam_list[_.random(0, pam_list.length)];
+	// Here are some examples of how we can write queries....
   	// this could be useful for lots of things.
  	var permutations = [
 
@@ -99,8 +95,8 @@ $(window).load(function () {
  						
   						{'chain_id':'same'},
   						{'user_id':'diff'},
-  						{'user_id': {'evals':function(param,obj){
-  							return(obj[param]%2 != 0)
+  						{'user_id': {'evals':function(param,obj1,obj2){
+  							return(obj2[param]%2 != 0)
   						}}}
   					]
  		},
@@ -110,8 +106,8 @@ $(window).load(function () {
  						
   						{'chain_id':'same'},
   						{'user_id':'diff'},
-  						{'user_id': {'evals':function(param,obj){
-  							return(obj[param]%2 == 0)
+  						{'user_id': {'evals':function(param,obj1,obj2){
+  							return(obj2[param]%2 == 0)
   						}}}
   					]
  		},
@@ -146,7 +142,7 @@ $(window).load(function () {
  						
   					]
  		}
- 	];
+ 	]
 
  	/*
 
@@ -169,4 +165,13 @@ $(window).load(function () {
   		})
   		$('body').append(cont)
   	})
+
+}
+
+
+$(window).load(function () {
+ 	//take a random entry from the list
+  	
+
+ 	test_queries();
 });
