@@ -3,6 +3,18 @@ String.prototype.trim = function() {
     return this.replace(/^\s+|\s+$/g, "");
 }
 
+function getQueryStringParam(name)
+{
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(window.location.search);
+  if(results == null)
+    return "";
+  else
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 
 function getPlayerCode(file, filter, id) {
 	    flashvars = "flv=http://greendotblade2.cs.nyu.edu/privacy/flv/" + filter + "/" + file + ".flv";
@@ -197,13 +209,22 @@ function rnd_element(list){
 }
 
 
-function get_question(){
+function get_question(value){
 	//get a random person action movie
-	var hero = rnd_element(pam_list),
-	pams =[];
+	var hero = null,
+		pams =[];
+
+	if (value){
+		hero = get_pams(null,[{'id':{'is':value}}])[0]
+	}else{
+		hero = rnd_element(pam_list);
+	}
+
+	console.log(hero)
+	
 
 	pams = get_pams(hero,[{'user_id':'diff'},{'chain_id':'same'}]);
-	
+
 
 
 
@@ -244,8 +265,18 @@ function get_question(){
 
 function populate_question(){
 
-	var Q = get_question();
+	var value = null;
 
+	if (getQueryStringParam('h')){
+    	value = getQueryStringParam('h');    
+    }
+
+
+
+	var Q = get_question(value);
+
+
+	$('body').append('<div>Hero:'+Q.hero.id+'</div>')
 
     $(Q.army).each(function(){
         $("#choices").append(getPlayerCode(this.filename, Q.filter, this.parent_id));
@@ -253,7 +284,6 @@ function populate_question(){
 
     $("#subject").append(getPlayerCode(Q.hero.filename, "original", -1));
 
-    console.log(Q)
 
 }
 
@@ -261,9 +291,6 @@ function populate_question(){
 $(window).load(function () {
 
 
-	console.log()
-
- 	// test_queries();
  	populate_question()
 
 });
