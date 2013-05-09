@@ -36,7 +36,9 @@ function get_pams(pam,query_object){
 	}
 
 	return PL.sortBy(function(a){
-		return a[query_object[0][0]]
+		if (query_object.length){
+			return a[query_object[0][0]]
+		}
 	}).value();
 
 }
