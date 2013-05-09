@@ -14,6 +14,9 @@ var q_funcs = {
 	'is_not': function(param,obj1,obj2,val){
 		return (obj2[param] != val)
 	},
+	'evals' : function(param,obj1,obj2,func){
+		return func(param,obj2)
+	}
 
 }
 
@@ -40,7 +43,11 @@ function get_pams(pam,query_object){
 			var l = Object.keys(v)[0];
 			p = v[l];
 			v = l;
+
+
+
 		}
+
 
 
 		PL = _(PL).filter(function(thispam){
@@ -84,6 +91,28 @@ $(window).load(function () {
   						{'chain_id':'same'},
   						{'user_id':'diff'},
   						{'user_id': {'is_not':5}}
+  					]
+ 		},
+ 		 {
+ 			'name': 'same action, different person, person id is odd',
+ 			'query':[
+ 						
+  						{'chain_id':'same'},
+  						{'user_id':'diff'},
+  						{'user_id': {'evals':function(param,obj){
+  							return(obj[param]%2 != 0)
+  						}}}
+  					]
+ 		},
+ 		{
+ 			'name': 'same action, different person, person id is even',
+ 			'query':[
+ 						
+  						{'chain_id':'same'},
+  						{'user_id':'diff'},
+  						{'user_id': {'evals':function(param,obj){
+  							return(obj[param]%2 == 0)
+  						}}}
   					]
  		},
  		{
