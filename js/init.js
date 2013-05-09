@@ -1,3 +1,32 @@
+var show = true;
+String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, "");
+}
+
+
+function getPlayerCode(file, filter, id) {
+	    flashvars = "flv=http://greendotblade2.cs.nyu.edu/privacy/flv/" + filter + "/" + file + ".flv";
+	    float = "float: left;";
+	    if (id == -1) float = "";
+	    html = '<div style="background:#EEEEEE; width: 160px; padding: 10px; margin: 10px;' + float + '">	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="160" height="120" id="player" align="middle"><param name="allowScriptAccess" value="sameDomain" /><param name="allowFullScreen" value="false" /><param name="movie" value="player.swf" /><param name="quality" value="low" /><param name="scale" value="noscale" /><param name="salign" value="lt" /><param name="bgcolor" value="#eeeeee" /><param name="FlashVars" value="' + flashvars + '" />	<embed src="player.swf" FlashVars="' + flashvars + '" quality="low" scale="noscale" salign="lt" bgcolor="#eeeeee" width="160" height="120" name="player" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"/></object>';
+	    if (id != -1) html += "<center>" + (id + 1) + " <input type=button value='Identify as Subject' onClick=choose(" + id + ")>";
+	    else html += "<center>Subject</center>"
+	    html += '</div>';
+	    return html;
+	}
+
+function showHide(hide) {
+    show = !show;
+    if (show) {
+        document.getElementById("showButton").value = "Hide Instructions";
+        document.getElementById("instructions").style.display = "Block";
+    } else {
+        document.getElementById("showButton").value = "Show Instructions";
+        document.getElementById("instructions").style.display = "None";
+    }
+}
+
+
 
 var q_funcs = {
 
@@ -205,11 +234,28 @@ function get_question(){
 }
 
 
+function populate_question(){
+
+	var Q = get_question();
+
+
+    $(Q.army).each(function(){
+        $("#choices").append(getPlayerCode(this.filename, Q.filter, this.parent_id));
+    })
+
+    $("#subject").append(getPlayerCode(Q.hero.filename, "original", -1));
+
+    console.log(Q)
+
+}
+
 
 $(window).load(function () {
 
-	console.log(get_question())
+
+	console.log()
 
  	// test_queries();
+ 	populate_question()
 
 });
