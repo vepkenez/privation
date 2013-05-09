@@ -199,7 +199,14 @@ function rnd_element(list){
 
 function get_question(){
 	//get a random person action movie
-	var hero = rnd_element(pam_list);
+	var hero = rnd_element(pam_list),
+	pams =[];
+
+	pams = get_pams(hero,[{'user_id':'diff'},{'chain_id':'same'}]);
+	
+
+
+
 	var filter = rnd_element(filters);
 
 	if(results.length){
@@ -211,13 +218,16 @@ function get_question(){
 		}
 	}
 
+
+
+
 	return (
 		{	
 			'hero':hero,
 			'filter':filter,
 			'army':
 				_(
-					get_pams(hero,[{'user_id':'diff'}]))//get a bunch of different people performing any action
+					pams)//get a bunch of different people performing any action
 					.chain()
 					.shuffle()//shuffle the list
 					.first(8)//take the 1st 8
