@@ -19,7 +19,7 @@ function getQueryStringParam(name)
 function getPlayerCode(file, filter, id) {
 	    flashvars = "flv=http://greendotblade2.cs.nyu.edu/privacy/flv/" + filter + "/" + file + ".flv";
 	    html = '<div class="choice_box">	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="160" height="120" id="player" align="middle"><param name="allowScriptAccess" value="sameDomain" /><param name="allowFullScreen" value="false" /><param name="movie" value="player.swf" /><param name="quality" value="low" /><param name="scale" value="noscale" /><param name="salign" value="lt" /><param name="bgcolor" value="#eeeeee" /><param name="FlashVars" value="' + flashvars + '" />	<embed src="player.swf" FlashVars="' + flashvars + '" quality="low" scale="noscale" salign="lt" bgcolor="#eeeeee" width="160" height="120" name="player" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"/></object>';
-	    if (id != -1) html += "<center>" + (id + 1) + " <input type=button value='Identify as Subject' onClick=choose(" + id + ")>";
+	    if (id != -1) html += "<center>" + (id) + " <input type=button value='Identify as Subject' onClick=choose(" + id + ")>";
 	    else html += "<center>Subject</center>"
 	    html += '</div>';
 	    return html;
@@ -205,11 +205,12 @@ var num_Qs = 10,
 	results = [];
 
 function rnd_element(list){
-	return list[_.random(0,list.length-1)]
+	var a = _.toArray(list)
+	return a[_.random(0,a.length-1)]
 }
 
 
-function get_question(value){
+function get_task1_question(value){
 	//get a random person action movie
 	var hero = null,
 		pams =[];
@@ -218,43 +219,53 @@ function get_question(value){
 	if (value){
 		hero = get_pams(null,[{'id':{'is':value}}])[0]
 	}else{
-		hero = rnd_element(pam_list);
+		hero = rnd_element(get_pams(null,[{'user_study': {'is': 1}}]));
 	}
 
 	// pick a random filter
 	var filter = rnd_element(filters);
 
 	// make sure we don't get the same hero or filter as last time
-	if(results.length){
-		while(_(results).last().hero.user_id == hero.user_id){
-			hero = rnd_element(pam_list);
-		}		
-		while(_(results).last().filter == filter){
-			filter = rnd_element(filters);
-		}
-	}
+	// if(results.length){
+	// 	while(_(results).last().hero.user_id == hero.user_id){
+	// 		hero = rnd_element(pam_list);
+	// 	}		
+	// 	while(_(results).last().filter == filter){
+	// 		filter = rnd_element(filters);
+	// 	}
+	// }
 
 
 	//now based on the hero, get a bunch of movies of people doing the same action
 	// as long as none of them are the same person as the hero
 	// return our question
+
+	// get a random movie where the chain_id is different from the chain_id the hero is doing
+	var random_action = rnd_element(get_pams(hero,[{'chain_id': 'diff'}]));
+
 	return (
 		{	
 			'hero':hero,
 			'filter':filter,
 			'army':
-				_(get_pams(hero,[
-						{'user_id':'diff'},
-						{'chain_id':'same'}
-					]))//a bunch of different people not including the hero, performing the same action
-					
+				_(get_pams( //select from the list
+						random_action, //based on the the randomly chosen action
+						[
+							{'chain_id':'same'}, // where the chain_id is the same as the random action
+							{'user_id': {'is_not':hero.user_id}} // and the user_id is not the hero's id
+					]))		
 					.chain()//underscore.js stuff
 
 					.shuffle()//shuffle the list
 					.first(8)//take the 1st 8
 					.union(
-						// add in a movie of the subject doing a different action
-						[_(get_pams(hero,[{'user_id':'same'},{'chain_id':'diff'}])).shuffle()[0]]
+						// add in a movie of the hero doing a different action
+						[rnd_element(//get a random entry from the list
+							get_pams(hero, //based on the hero
+								[
+									{'user_id':'same'},// of the same person as the hero
+									{'chain_id':'diff'}// doing a different action
+								]))]
 					)
 					.shuffle()//mix it all up
 					.value()// underscore.js stuff...returns the result as a list
@@ -274,14 +285,16 @@ function populate_question(){
 
     // get our question
     //  this will have a 'hero' an 'army', and a 'filter'
-	var Q = get_question(value);
+	var Q = get_task1_question(value);
+
+	console.log(Q)
 
 	// add our hero label so we know the id of the hero for future reference (testing only)
-	$('body').append('<div>Hero:'+Q.hero.id+'</div>')
+	$('body').append('<div>Hero:'+Q.hero.user_id+'</div>')
 
 	//add the army
     $(Q.army).each(function(){
-        $("#choices").append(getPlayerCode(this.filename, Q.filter, this.parent_id));
+        $("#choices").append(getPlayerCode(this.filename, Q.filter, this.user_id));
     })
 
     // add the subject
