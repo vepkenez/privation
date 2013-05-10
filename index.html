@@ -47,7 +47,10 @@
 	</div>
 
 
-
+  <select id="taskchooser">
+    <option selected="selected" value="1">1</option>
+    <option value="2">2</option>
+  </select>
 
 
 
@@ -65,14 +68,14 @@
 	<input type="hidden" id="ip" name="ip" value="70.192.72.103">
 	<input type="hidden" id="agent" name="agent" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.29.13 (KHTML, like Gecko) Version/6.0.4 Safari/536.29.13">
 	<br>
-  <div id=top style="clear: both; height: 200px; padding-left: 50%; margin-left: -100px; position: relative;">
-    <div id=subject style="width: 200px"></div>
-    <div id=buttons style="width: 160px; position: relative; top: -100px; left: 200px; ">
-      <span id=stat>Question 0/0<br>Choose from 0</span>
-      <input type=button value="Click here to submit HIT" id=submitButton onClick="" disabled>
+  <div id="top" style="clear: both; height: 200px; padding-left: 50%; margin-left: -100px; position: relative;">
+    <div class="task_content" id="subject" style="width: 200px"></div>
+    <div id="buttons" style="width: 160px; position: relative; top: -100px; left: 200px; ">
+      <span id="stat">Question 0/0<br>Choose from 0</span>
+      <input type=button value="Click here to submit HIT" id="submitButton" onClick="" disabled>
     </div>
   </div>
-  <div id=choices style="text-align: center"></div>
+  <div class="task_content" id="choices" style="text-align: center"></div>
 </form>
 
 <script language="Javascript">
